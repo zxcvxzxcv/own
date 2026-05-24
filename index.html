@@ -494,19 +494,25 @@ function updateStats(){
 }
 
 // ── Lock ──
-async function checkPw(){
+function checkPw(){
   const val=document.getElementById('lock-pw').value;
   if(val===PASSWORD){
-    sessionStorage.setItem(SESSION_KEY,'1');
-    document.getElementById('lock').classList.add('hidden');
-    if(!idb){try{await openIDB();await loadAllImages();}catch(e){}}
-    renderList();updateStats();
+    try{sessionStorage.setItem(SESSION_KEY,'1');}catch(e){}
+    unlockApp();
   } else {
     const box=document.querySelector('.lock-box');
     document.getElementById('lock-err').textContent='비밀번호가 틀렸습니다';
     box.classList.remove('lock-shake');void box.offsetWidth;box.classList.add('lock-shake');
     document.getElementById('lock-pw').value='';
     document.getElementById('lock-pw').focus();
+  }
+}
+function unlockApp(){
+  document.getElementById('lock').classList.add('hidden');
+  renderList();updateStats();
+  // idb는 백그라운드에서 로드 (이미 열려있으면 스킵)
+  if(!idb){
+    openIDB().then(()=>loadAllImages().then(()=>renderList())).catch(()=>{});
   }
 }
 
@@ -1081,22 +1087,22 @@ function switchTab(name){
 }
 
 // ── Init ──
-openIDB().then(async()=>{
-  await loadAllImages();
-  if(sessionStorage.getItem(SESSION_KEY)==='1'){
+(function(){
+  let authed=false;
+  try{authed=sessionStorage.getItem(SESSION_KEY)==='1';}catch(e){}
+  if(authed){
     document.getElementById('lock').classList.add('hidden');
     renderList();updateStats();
+    openIDB().then(()=>loadAllImages().then(()=>renderList())).catch(()=>{});
   } else {
-    setTimeout(()=>document.getElementById('lock-pw').focus(),100);
+    // idb 미리 열어두기 (백그라운드)
+    openIDB().then(()=>loadAllImages()).catch(()=>{});
+    setTimeout(()=>{
+      const pw=document.getElementById('lock-pw');
+      if(pw)pw.focus();
+    },100);
   }
-}).catch(()=>{
-  if(sessionStorage.getItem(SESSION_KEY)==='1'){
-    document.getElementById('lock').classList.add('hidden');
-    renderList();updateStats();
-  } else {
-    setTimeout(()=>document.getElementById('lock-pw').focus(),100);
-  }
-});
+})();
 </script>
 </body>
 </html>
