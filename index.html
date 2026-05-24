@@ -71,17 +71,17 @@
   .btn.sm{padding:4px 10px;font-size:11px}
 
   /* Table-style list */
-  .list-header{display:grid;grid-template-columns:1fr 80px 180px 80px 60px;gap:0;border-bottom:0.5px solid var(--border);padding:6px 14px;font-size:11px;color:var(--text3);letter-spacing:0.5px;text-transform:uppercase;margin-bottom:4px}
+  /* list-header removed */
   .list-toolbar{display:flex;gap:8px;margin-bottom:12px;align-items:center}
   .list-toolbar .sort-btns{display:flex;gap:4px;margin-left:auto}
 
   /* Cards - desktop row style */
   .card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);margin-bottom:6px;overflow:hidden;transition:border-color 0.15s}
   .card:hover{border-color:var(--border2)}
-  .card-header{display:grid;grid-template-columns:1fr 100px 180px 30px 32px 20px;gap:8px;align-items:center;padding:10px 14px;cursor:pointer;user-select:none}
+  .card-header{display:flex;align-items:center;gap:8px;padding:8px 12px;cursor:pointer;user-select:none}
   .code-badge{font-family:var(--mono);font-size:12px;font-weight:500;background:var(--accent-dim);color:var(--accent);border:0.5px solid rgba(255,45,120,0.25);border-radius:4px;padding:2px 8px;display:inline-block;white-space:nowrap;box-shadow:0 0 8px rgba(255,45,120,0.15)}
   .card-tags{display:flex;gap:4px;flex-wrap:nowrap;overflow:hidden;min-width:0}
-  .tag{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:99px;font-size:10px;font-weight:500;border:0.5px solid;flex-shrink:0}
+  .tag{display:inline-flex;align-items:center;gap:3px;padding:2px 6px;border-radius:99px;font-size:10px;font-weight:500;border:0.5px solid;flex-shrink:0}
   .tag.genre{background:var(--tag-genre-bg);color:var(--tag-genre-c);border-color:var(--tag-genre-b)}
   .tag.studio{background:var(--tag-studio-bg);color:var(--tag-studio-c);border-color:var(--tag-studio-b)}
   .tag.star{background:var(--tag-star-bg);color:var(--tag-star-c);border-color:var(--tag-star-b)}
@@ -90,7 +90,7 @@
   .tag-del:hover{opacity:1}
   .chevron{font-size:12px;color:var(--text3);transition:transform 0.2s}
   .chevron.open{transform:rotate(180deg)}
-  .card-body{border-top:0.5px solid var(--border);padding:14px;display:grid;grid-template-columns:200px 1fr;gap:16px;animation:slideDown 0.15s ease}
+  .card-body{border-top:0.5px solid var(--border);padding:12px 14px;animation:slideDown 0.15s ease}
   .card-body.hidden{display:none}
   @keyframes slideDown{from{opacity:0;transform:translateY(-4px)}to{opacity:1;transform:translateY(0)}}
 
@@ -123,7 +123,7 @@
   .card-img{width:100%;height:160px;object-fit:cover;border-radius:var(--radius);border:0.5px solid var(--border);display:block}
   .img-del{position:absolute;top:5px;right:5px;background:rgba(0,0,0,0.7);color:#fff;border:none;border-radius:50%;width:20px;height:20px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center}
   .img-del:hover{background:var(--danger)}
-  .paste-zone{border:1px dashed var(--border2);border-radius:var(--radius);padding:20px 10px;text-align:center;font-size:11px;color:var(--text3);cursor:pointer;transition:all 0.15s;height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:6px}
+  .paste-zone{border:1px dashed var(--border2);border-radius:var(--radius);padding:14px 10px;text-align:center;font-size:11px;color:var(--text3);cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:4px;margin-bottom:8px}
   .paste-zone:hover,.paste-zone.drag{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
 
   /* Group view */
@@ -255,6 +255,28 @@
   .weekday-top-item{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:0.5px solid var(--border)}
   .weekday-top-code{font-family:var(--mono);font-size:11px;color:var(--accent);flex:1}
   .weekday-top-n{font-family:var(--mono);font-size:11px;color:var(--text2)}
+
+  /* ── Grid card list ── */
+  #list-container{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+  .card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:border-color 0.15s;display:flex;flex-direction:column}
+  .card:hover{border-color:var(--border2)}
+  .card-thumb{width:100%;height:140px;object-fit:cover;display:block;cursor:pointer;background:var(--surface2)}
+  .card-thumb-ph{width:100%;height:140px;display:flex;align-items:center;justify-content:center;font-size:32px;background:var(--surface2);cursor:pointer;color:var(--text3);flex-direction:column;gap:6px}
+  .card-thumb-ph span{font-size:11px;color:var(--text3)}
+  .card-info{padding:8px 10px;flex:1;display:flex;flex-direction:column;gap:5px}
+  .card-info-top{display:flex;align-items:center;gap:6px;justify-content:space-between}
+  .card-info-tags{display:flex;gap:3px;flex-wrap:wrap}
+  .card-expand{border-top:0.5px solid var(--border);padding:0}
+  .card-expand-body{padding:10px 12px;display:none}
+  .card-expand-body.open{display:block;animation:slideDown 0.15s ease}
+  /* group/alpha mode: revert to list */
+  .list-mode #list-container{display:block}
+  .list-mode .card{flex-direction:row;align-items:stretch;border-radius:var(--radius)}
+  .list-mode .card-thumb{width:60px;height:60px;flex-shrink:0;border-radius:0}
+  .list-mode .card-thumb-ph{width:60px;height:60px;flex-shrink:0;border-radius:0;font-size:18px}
+  .list-mode .card-info{flex-direction:row;align-items:center;padding:8px 12px;gap:10px}
+  .list-mode .card-info-top{flex:1}
+  .list-mode .card-expand{border-top:none;border-left:0.5px solid var(--border)}
 </style>
 </head>
 <body>
@@ -318,9 +340,7 @@
   <div class="content">
     <!-- 목록 -->
     <div id="panel-list" class="panel active">
-      <div class="list-header">
-        <div>품번</div><div>횟수</div><div>태그</div><div></div><div></div>
-      </div>
+
       <div id="list-container"></div>
     </div>
 
@@ -518,10 +538,11 @@ function deleteCode(code){
     db=db.filter(x=>x.code!==code); save(); renderList(); toast(`'${code}' 삭제됨`);
   });
 }
-function toggleCard(code){
+function toggleExpand(code){
   const item=db.find(x=>x.code===code);
   if(item){ item.open=!item.open; save(); renderList(); }
 }
+function toggleCard(code){ toggleExpand(code); }
 
 /* ── 태그 추가/삭제 ── */
 function addTagPreset(code,type,val){
@@ -587,13 +608,19 @@ function syncGroupBtn(){
 
 /* ── Card HTML ── */
 function cardHtml(item){
+  const DAYS=['일','월','화','수','목','금','토'];
   const tagsHtml=item.tags.length
-    ? item.tags.map((t,i)=>
-        `<span class="tag ${t.type}">${esc(t.value)}<span class="tag-del" onclick="removeTag('${esc(item.code)}',${i})">✕</span></span>`
-      ).join('')
-    : `<span style="font-size:11px;color:var(--text3)">태그 없음</span>`;
+    ? item.tags.map((t,i)=>`<span class="tag ${t.type}">${esc(t.value)}<span class="tag-del" onclick="removeTag('${esc(item.code)}',${i})">✕</span></span>`).join('')
+    : '';
 
-  // 프리셋 태그 버튼 (타입별로)
+  const thumbHtml=item.img
+    ? `<img class="card-thumb" src="${item.img}" onclick="toggleExpand('${esc(item.code)}')">`
+    : `<div class="card-thumb-ph" onclick="toggleExpand('${esc(item.code)}')"><span>📷</span><span>클릭해서 열기</span></div>`;
+
+  const reviewCount=item.reviews?item.reviews.length:0;
+  const lastReview=item.reviews&&item.reviews.length?item.reviews[item.reviews.length-1].text:'';
+
+  // preset tags
   let presetSections='';
   TAG_TYPES.forEach(t=>{
     const list=presets[t.value]||[];
@@ -602,61 +629,87 @@ function cardHtml(item){
       const already=item.tags.find(tg=>tg.type===t.value&&tg.value===v);
       return `<span class="preset-tag ${t.value}${already?' already':''}" onclick="${already?'':'addTagPreset(\''+esc(item.code)+'\',\''+t.value+'\',\''+esc(v)+'\')'}">${esc(v)}</span>`;
     }).join('');
-    presetSections+=`<div style="margin-bottom:6px"><div style="font-size:10px;color:var(--text3);margin-bottom:4px">${t.label}</div><div class="preset-tags">${btns}</div></div>`;
+    presetSections+=`<div style="margin-bottom:6px"><div style="font-size:10px;color:var(--text3);margin-bottom:3px">${t.label}</div><div class="preset-tags">${btns}</div></div>`;
   });
-
   const hasPresets=TAG_TYPES.some(t=>(presets[t.value]||[]).length>0);
   const typeOpts=TAG_TYPES.map(t=>`<option value="${t.value}">${t.label}</option>`).join('');
 
-  return `
-  <div class="card">
-    <div class="card-header" onclick="toggleCard('${esc(item.code)}')">
-      <span class="code-badge">${esc(item.code)}</span>
-      <span class="count-ctrl" onclick="event.stopPropagation()">
-        <button class="cnt-btn minus" onclick="changeCount('${esc(item.code)}',-1)">−</button>
-        <span class="cnt-num">${item.count||0}</span>
-        <button class="cnt-btn plus" onclick="changeCount('${esc(item.code)}',1)">+</button>
-      </span>
-      <div class="card-tags">${tagsHtml}</div>
-      <div class="card-actions" onclick="event.stopPropagation()">
-        <button class="btn sm danger icon" onclick="deleteCode('${esc(item.code)}')">✕</button>
+  // weekday mini bars
+  const wd=item.weekdays||[0,0,0,0,0,0,0];
+  const maxW=Math.max(...wd,1);
+  const ORDER=[1,2,3,4,5,6,0];
+  const weekdayHtml=wd.every(x=>!x)?'':
+    '<div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)">'+
+    '<div style="font-size:10px;color:var(--text3);margin-bottom:5px">요일별 사용</div>'+
+    '<div style="display:flex;gap:6px;align-items:flex-end">'+
+    ORDER.map(d=>'<div style="display:flex;flex-direction:column;align-items:center;gap:2px">'+
+      '<div style="width:12px;height:'+Math.max(Math.round((wd[d]/maxW)*28),2)+'px;background:var(--accent);border-radius:2px;opacity:0.8"></div>'+
+      '<span style="font-size:8px;color:var(--text3)">'+DAYS[d]+'</span>'+
+      '<span style="font-size:8px;font-family:var(--mono);color:var(--accent)">'+(wd[d]||'')+'</span>'+
+    '</div>').join('')+
+    '</div></div>';
+
+  // reviews stack
+  const reviewsHtml=(item.reviews&&item.reviews.length)?
+    '<div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)">'+
+    '<div style="font-size:10px;color:var(--text3);margin-bottom:5px">한줄평 ('+item.reviews.length+'개)</div>'+
+    item.reviews.slice().reverse().map((r,ri2)=>{
+      const ri=item.reviews.length-1-ri2;
+      const d=new Date(r.date);
+      const ds=(d.getMonth()+1)+'/'+d.getDate()+'('+DAYS[d.getDay()]+')';
+      return '<div style="padding:5px 0;border-bottom:0.5px solid var(--border);font-size:12px;display:flex;gap:8px">'+
+        '<span style="color:var(--text3);flex-shrink:0;font-size:10px;min-width:48px">'+ds+'</span>'+
+        '<span style="flex:1;color:var(--text)">'+esc(r.text)+'</span>'+
+        '<span style="cursor:pointer;color:var(--text3);font-size:10px" onclick="deleteReview(\''+esc(item.code)+'\','+ri+')">✕</span>'+
+      '</div>';
+    }).join('')+
+    '</div>':'';
+
+  // paste zone for image
+  const pasteZone=item.img?
+    `<div style="margin-bottom:8px;position:relative"><img src="${item.img}" style="width:100%;max-height:180px;object-fit:cover;border-radius:var(--radius);border:0.5px solid var(--border)"><button class="img-del" onclick="removeImg('${esc(item.code)}')">✕</button></div>`:
+    `<div class="paste-zone" onclick="document.getElementById('fi-${esc(item.code)}').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event,'${esc(item.code)}')">📋 Ctrl+V 붙여넣기 또는 클릭<input type="file" id="fi-${esc(item.code)}" accept="image/*" style="display:none" onchange="handleFile(event,'${esc(item.code)}')"></div>`;
+
+  return `<div class="card" id="card-${esc(item.code)}">
+    ${thumbHtml}
+    <div class="card-info">
+      <div class="card-info-top">
+        <span class="code-badge" style="font-size:11px">${esc(item.code)}</span>
+        <span class="count-ctrl" onclick="event.stopPropagation()">
+          <button class="cnt-btn minus" onclick="changeCount('${esc(item.code)}',-1)">−</button>
+          <span class="cnt-num">${item.count||0}</span>
+          <button class="cnt-btn plus" onclick="changeCount('${esc(item.code)}',1)">+</button>
+        </span>
       </div>
-      <span class="chevron ${item.open?'open':''}">▾</span>
+      <div class="card-info-tags">${tagsHtml}</div>
+      ${lastReview?`<div style="font-size:11px;color:var(--text3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">💬 ${esc(lastReview)}</div>`:''}
     </div>
-    <div class="card-body ${item.open?'':'hidden'}">
-      ${item.img ? `<div class="card-img-wrap"><img class="card-img" src="${item.img}"><button class="img-del" onclick="removeImg('${esc(item.code)}')" title="사진 삭제">✕</button></div>` : `<div class="paste-zone" id="pz-${esc(item.code)}" onclick="document.getElementById('fi-${esc(item.code)}').click()" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleDrop(event,'${esc(item.code)}')">📋 여기에 Ctrl+V 로 붙여넣기 또는 클릭해서 파일 선택<input type="file" id="fi-${esc(item.code)}" accept="image/*" style="display:none" onchange="handleFile(event,'${esc(item.code)}')"></div>`}
-      ${hasPresets?`<div class="preset-section">${presetSections}</div><div class="divider"></div>`:''}
-      <div class="add-tag-row">
-        <select id="tt-${esc(item.code)}">${typeOpts}</select>
-        <input type="text" id="tv-${esc(item.code)}" placeholder="직접 입력" onkeydown="if(event.key==='Enter')addTagManual('${esc(item.code)}')">
-        <button class="btn sm primary" onclick="addTagManual('${esc(item.code)}')">+ 추가</button>
+    <div class="card-expand">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 10px;border-top:0.5px solid var(--border)">
+        <span style="font-size:10px;color:var(--text3)">${reviewCount?'💬'+reviewCount+'개':''}</span>
+        <button class="btn sm" style="padding:2px 8px;font-size:10px" onclick="toggleExpand('${esc(item.code)}')">
+          ${item.open?'▲ 닫기':'▼ 편집'}
+        </button>
+        <button class="btn sm danger" style="padding:2px 6px;font-size:10px" onclick="deleteCode('${esc(item.code)}')">✕</button>
       </div>
-      ${(()=>{
-        const DAYS=['일','월','화','수','목','금','토'];
-        const ORDER=[1,2,3,4,5,6,0];
-        const wd=item.weekdays||[0,0,0,0,0,0,0];
-        const maxW=Math.max(...wd,1);
-        if(wd.every(x=>!x)) return '';
-        const bars=ORDER.map(d=>'<div style="display:flex;flex-direction:column;align-items:center;gap:2px"><div style="width:14px;height:'+Math.max(Math.round((wd[d]/maxW)*32),2)+'px;background:var(--accent);border-radius:2px;opacity:0.8"></div><span style="font-size:9px;color:var(--text3)">'+DAYS[d]+'</span><span style="font-size:9px;font-family:var(--mono);color:var(--accent)">'+(wd[d]||'')+'</span></div>').join('');
-        return '<div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)"><div style="font-size:10px;color:var(--text3);margin-bottom:6px">요일별 사용</div><div style="display:flex;gap:8px;align-items:flex-end">'+bars+'</div></div>';
-      })()}
-      ${(()=>{
-        const reviews=item.reviews||[];
-        if(!reviews.length) return '';
-        const DAYS=['일','월','화','수','목','금','토'];
-        const html=reviews.slice().reverse().slice(0,3).map((r,ri2)=>{
-          const ri=reviews.length-1-ri2;
-          const d=new Date(r.date);
-          return '<div style="display:flex;gap:8px;padding:5px 0;border-bottom:0.5px solid var(--border);font-size:12px"><span style="color:var(--text3);flex-shrink:0;font-size:10px">'+(d.getMonth()+1)+'/'+d.getDate()+'('+DAYS[d.getDay()]+')</span><span style="flex:1;color:var(--text)">'+r.text+'</span><span style="cursor:pointer;color:var(--text3);font-size:10px" onclick="deleteReview(\''+item.code+'\','+ri+')">✕</span></div>';
-        }).join('');
-        return '<div style="margin-top:10px;padding-top:10px;border-top:0.5px solid var(--border)"><div style="font-size:10px;color:var(--text3);margin-bottom:4px">최근 한줄평</div>'+html+'</div>';
-      })()}
+      <div class="card-expand-body ${item.open?'open':''}">
+        ${pasteZone}
+        ${hasPresets?`<div style="margin-bottom:8px">${presetSections}</div>`:''}
+        <div class="add-tag-row" style="margin-bottom:8px">
+          <select id="tt-${esc(item.code)}">${typeOpts}</select>
+          <input type="text" id="tv-${esc(item.code)}" placeholder="직접 입력" onkeydown="if(event.key==='Enter')addTagManual('${esc(item.code)}')">
+          <button class="btn sm primary" onclick="addTagManual('${esc(item.code)}')">+</button>
+        </div>
+        ${weekdayHtml}
+        ${reviewsHtml}
+      </div>
     </div>
   </div>`;
 }
 
 /* ── Render ── */
 function renderList(){
+  const container=document.getElementById('list-container');
   const q=(document.getElementById('search').value||'').toLowerCase();
   let items=q ? db.filter(x=>x.code.includes(q)||x.tags.some(t=>t.value.toLowerCase().includes(q))) : [...db];
   const el=document.getElementById('list-container');
@@ -667,6 +720,7 @@ function renderList(){
   }
 
   if(groupMode==='tag'){
+    document.getElementById('panel-list').classList.add('list-mode');
     // Apply tag filter
     if(activeTagFilters.size>0){
       items=items.filter(item=>item.tags.some(t=>activeTagFilters.has(t.type+'::'+t.value)));
@@ -698,6 +752,11 @@ function renderList(){
     el.innerHTML=html; return;
   }
 
+  if(groupMode==='tag'||sortAlpha){
+    if(container) container.parentElement && document.getElementById('panel-list').classList.add('list-mode');
+  } else {
+    document.getElementById('panel-list').classList.remove('list-mode');
+  }
   if(sortAlpha){
     items.sort((a,b)=>a.code.localeCompare(b.code));
     const alphaMap={};
@@ -837,19 +896,16 @@ function changeCount(code, delta){
   const item=db.find(x=>x.code===code);
   if(!item) return;
   if(delta>0){
-    // Record weekday
-    const day=new Date().getDay(); // 0=Sun, 1=Mon ... 6=Sat
+    const day=new Date().getDay();
     if(!item.weekdays) item.weekdays=[0,0,0,0,0,0,0];
     item.weekdays[day]=(item.weekdays[day]||0)+1;
     item.count=(item.count||0)+1;
     save(); renderList();
-    // Show review modal
     showReviewModal(code);
   } else {
-    item.count=Math.max(0,(item.count||0)-1);
-    // Subtract from today's weekday too
     const day=new Date().getDay();
-    if(item.weekdays && item.weekdays[day]>0) item.weekdays[day]--;
+    item.count=Math.max(0,(item.count||0)-1);
+    if(item.weekdays&&item.weekdays[day]>0) item.weekdays[day]--;
     save(); renderList();
   }
 }
@@ -866,17 +922,18 @@ function showReviewModal(code){
 }
 function closeReviewModal(){ document.getElementById('review-modal-overlay').classList.remove('show'); _reviewCode=null; }
 function submitReview(){
-  const inp=document.getElementById('review-input'); if(!inp) return;
+  const inp=document.getElementById('review-input');
+  if(!inp) return;
   const text=inp.value.trim();
-  if(!_reviewCode) return;
+  if(!_reviewCode){ closeReviewModal(); return; }
   const item=db.find(x=>x.code===_reviewCode);
-  if(item && text){
+  if(item){
     if(!item.reviews) item.reviews=[];
-    item.reviews.push({text, date:new Date().toISOString(), day:new Date().getDay()});
-    save();
+    if(text) item.reviews.push({text, date:new Date().toISOString(), day:new Date().getDay()});
+    save(); renderList();
   }
   closeReviewModal();
-  toast(text ? '한줄평 저장됨' : '한줄평 건너뜀');
+  toast(text?'한줄평 저장됨':'건너뜀');
 }
 
 /* ── Tag filter state ── */
@@ -919,7 +976,7 @@ function renderReviews(){
     el.innerHTML=`<div class="empty"><div class="empty-icon">💬</div><p>아직 한줄평이 없습니다<br><span style="font-size:11px">+1 버튼을 누르면 한줄평을 남길 수 있습니다</span></p></div>`;
     return;
   }
-  el.innerHTML=all.map(({code,img,review,idx})=>{
+  el.innerHTML='<div style="margin-bottom:8px;font-size:11px;color:var(--text3)">총 '+all.length+'개의 한줄평</div>'+all.map(({code,img,review,idx})=>{
     const d=new Date(review.date);
     const dateStr=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} (${DAYS[d.getDay()]})`;
     const thumbHtml=img?`<img class="review-thumb" src="${img}">`:`<div class="review-thumb-ph">🎬</div>`;
