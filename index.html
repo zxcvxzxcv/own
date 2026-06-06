@@ -269,6 +269,46 @@ select{padding:5px 9px;cursor:pointer}
 ::-webkit-scrollbar{width:4px}
 ::-webkit-scrollbar-track{background:var(--bg)}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:99px}
+
+/* ── View toggle button ── */
+.view-toggle{display:flex;gap:3px;background:var(--surface2);border:0.5px solid var(--border);border-radius:99px;padding:3px}
+.view-toggle button{padding:4px 10px;border:none;border-radius:99px;font-size:11px;font-weight:500;cursor:pointer;background:none;color:var(--text2);transition:all 0.15s;font-family:var(--sans)}
+.view-toggle button.active{background:var(--accent);color:#fff}
+
+/* ── Mobile layout ── */
+body.mobile-view{display:block}
+body.mobile-view .sidebar{display:none}
+body.mobile-view .main{margin-left:0}
+body.mobile-view .topbar{padding:0 12px;gap:8px}
+body.mobile-view .content{padding:12px}
+body.mobile-view #list-container{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+body.mobile-view .card-thumb{height:110px}
+body.mobile-view .card-thumb-ph{height:110px}
+
+/* mobile bottom nav */
+.mobile-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:0.5px solid var(--border);padding:6px 4px;z-index:20;grid-template-columns:repeat(7,1fr)}
+body.mobile-view .mobile-nav{display:grid}
+body.mobile-view .main{padding-bottom:60px}
+.mobile-nav button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 2px;border:none;background:none;color:var(--text3);cursor:pointer;font-size:9px;font-family:var(--sans);transition:all 0.12s}
+.mobile-nav button.active{color:var(--accent)}
+.mobile-nav .mnav-icon{font-size:18px;line-height:1}
+.mobile-nav button.active .mnav-icon{filter:drop-shadow(0 0 4px rgba(255,45,120,0.6))}
+
+/* mobile topbar adjust */
+body.mobile-view .tb-search input{font-size:12px}
+body.mobile-view .topbar-title{font-size:13px;font-weight:500}
+
+/* mobile card adjustments */
+body.mobile-view .code-badge{font-size:10px;padding:1px 6px}
+body.mobile-view .cnt-num{min-width:16px}
+body.mobile-view .tag{font-size:9px;padding:1px 5px}
+
+/* mobile form */
+body.mobile-view .form-card{max-width:100%}
+body.mobile-view .tag-manage-grid{grid-template-columns:1fr}
+body.mobile-view .weekday-grid{grid-template-columns:repeat(7,1fr);gap:5px}
+body.mobile-view .weekday-col{padding:8px 4px}
+body.mobile-view .weekday-count{font-size:13px}
 </style>
 </head>
 <body>
@@ -330,6 +370,10 @@ select{padding:5px 9px;cursor:pointer}
     <div class="tb-right" id="tb-right">
       <button class="btn sm" id="btn-alpha" onclick="toggleSort()">A→Z</button>
       <button class="btn sm" id="btn-group" onclick="toggleGroup()">태그별</button>
+    </div>
+    <div class="view-toggle" id="view-toggle">
+      <button id="vt-pc" class="active" onclick="setView('pc')">🖥 PC</button>
+      <button id="vt-mobile" onclick="setView('mobile')">📱 모바일</button>
     </div>
   </div>
   <div class="tag-filter-bar" id="tag-filter-bar">
@@ -447,6 +491,17 @@ select{padding:5px 9px;cursor:pointer}
 </div>
 
 <div id="toast"></div>
+
+<!-- Mobile bottom nav -->
+<div class="mobile-nav" id="mobile-nav">
+  <button id="mnav-list" onclick="switchTab('list')" class="active"><span class="mnav-icon">📋</span>목록</button>
+  <button id="mnav-add" onclick="switchTab('add')"><span class="mnav-icon">＋</span>추가</button>
+  <button id="mnav-import" onclick="switchTab('import')"><span class="mnav-icon">📂</span>불러오기</button>
+  <button id="mnav-presets" onclick="switchTab('presets')"><span class="mnav-icon">🏷</span>태그</button>
+  <button id="mnav-ranking" onclick="switchTab('ranking')"><span class="mnav-icon">🏆</span>순위</button>
+  <button id="mnav-reviews" onclick="switchTab('reviews')"><span class="mnav-icon">💬</span>한줄평</button>
+  <button id="mnav-weekday" onclick="switchTab('weekday')"><span class="mnav-icon">📅</span>요일</button>
+</div>
 
 <script>
 const PASSWORD = '1234'; // ★ 비밀번호 변경 ★
@@ -1132,10 +1187,31 @@ function exportTxt(){
   toast('txt 내보내기 완료');
 }
 
+// ── View toggle ──
+function setView(mode){
+  const body=document.body;
+  const btnPc=document.getElementById('vt-pc');
+  const btnMobile=document.getElementById('vt-mobile');
+  if(mode==='mobile'){
+    body.classList.add('mobile-view');
+    if(btnPc)btnPc.classList.remove('active');
+    if(btnMobile)btnMobile.classList.add('active');
+    try{localStorage.setItem('jav_view','mobile');}catch(e){}
+  } else {
+    body.classList.remove('mobile-view');
+    if(btnPc)btnPc.classList.add('active');
+    if(btnMobile)btnMobile.classList.remove('active');
+    try{localStorage.setItem('jav_view','pc');}catch(e){}
+  }
+}
+
 // ── Tab switch ──
 function switchTab(name){
   const names=['list','add','import','presets','ranking','reviews','weekday'];
-  names.forEach(n=>{const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n===name);});
+  names.forEach(n=>{
+    const el=document.getElementById('nav-'+n);if(el)el.classList.toggle('active',n===name);
+    const mel=document.getElementById('mnav-'+n);if(mel)mel.classList.toggle('active',n===name);
+  });
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.getElementById('panel-'+name).classList.add('active');
   const titles={list:'목록',add:'품번 추가',import:'메모장 불러오기',presets:'태그 관리',ranking:'순위',reviews:'한줄평',weekday:'요일 통계'};
@@ -1143,7 +1219,10 @@ function switchTab(name){
   const showSearch=name==='list';
   const ts=document.getElementById('tb-search');if(ts)ts.style.display=showSearch?'':'none';
   const tr=document.getElementById('tb-right');if(tr)tr.style.display=showSearch?'':'none';
+  const vt=document.getElementById('view-toggle');if(vt)vt.style.display='flex';
   if(!showSearch)hideFilterBar();
+  // view toggle always visible
+  const vt=document.getElementById('view-toggle');if(vt)vt.style.display='flex';
   if(name==='add')setTimeout(()=>document.getElementById('new-code').focus(),50);
   if(name==='presets')renderPresets();
   if(name==='ranking'){renderRanking();document.getElementById('rank-container').style.display='block';document.getElementById('actor-container').style.display='none';document.getElementById('rank-tab-code').classList.add('active-sort');document.getElementById('rank-tab-actor').classList.remove('active-sort');}
@@ -1153,6 +1232,13 @@ function switchTab(name){
 
 // ── Init ──
 (function(){
+  // 저장된 뷰 설정 복원 또는 모바일 자동 감지
+  let savedView='pc';
+  try{savedView=localStorage.getItem('jav_view')||'pc';}catch(e){}
+  if(savedView==='mobile'||window.innerWidth<=768){
+    setView('mobile');
+  }
+
   let authed=false;
   try{authed=sessionStorage.getItem('jav_auth')==='1';}catch(e){}
   if(authed){
