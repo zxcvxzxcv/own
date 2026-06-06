@@ -1219,10 +1219,8 @@ function switchTab(name){
   const showSearch=name==='list';
   const ts=document.getElementById('tb-search');if(ts)ts.style.display=showSearch?'':'none';
   const tr=document.getElementById('tb-right');if(tr)tr.style.display=showSearch?'':'none';
-  const vt=document.getElementById('view-toggle');if(vt)vt.style.display='flex';
+  {const vte=document.getElementById('view-toggle');if(vte)vte.style.display='flex';}
   if(!showSearch)hideFilterBar();
-  // view toggle always visible
-  const vt=document.getElementById('view-toggle');if(vt)vt.style.display='flex';
   if(name==='add')setTimeout(()=>document.getElementById('new-code').focus(),50);
   if(name==='presets')renderPresets();
   if(name==='ranking'){renderRanking();document.getElementById('rank-container').style.display='block';document.getElementById('actor-container').style.display='none';document.getElementById('rank-tab-code').classList.add('active-sort');document.getElementById('rank-tab-actor').classList.remove('active-sort');}
