@@ -526,10 +526,38 @@ async function sbGet(table, params='') {
 async function sbUpsert(table, data) {
   const r = await fetch(SUPABASE_URL+'/rest/v1/'+table, {
     method:'POST',
-    headers: {'apikey':SUPABASE_KEY,'Authorization':'Bearer '+SUPABASE_KEY,'Content-Type':'application/json','Prefer':'resolution=merge-duplicates'},
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer '+SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'resolution=merge-duplicates,return=minimal'
+    },
     body: JSON.stringify(data)
   });
-  if(!r.ok) throw new Error(await r.text());
+  if(!r.ok) {
+    const err = await r.text();
+    console.error('sbUpsert error:', err);
+    throw new Error(err);
+  }
+}
+
+// PATCH update (count/weekdays 같은 특정 필드만 업데이트)
+async function sbPatch(table, col, val, data) {
+  const r = await fetch(SUPABASE_URL+'/rest/v1/'+table+'?'+col+'=eq.'+encodeURIComponent(val), {
+    method:'PATCH',
+    headers: {
+      'apikey': SUPABASE_KEY,
+      'Authorization': 'Bearer '+SUPABASE_KEY,
+      'Content-Type': 'application/json',
+      'Prefer': 'return=minimal'
+    },
+    body: JSON.stringify(data)
+  });
+  if(!r.ok) {
+    const err = await r.text();
+    console.error('sbPatch error:', err);
+    throw new Error(err);
+  }
 }
 async function sbDelete(table, col, val) {
   const r = await fetch(SUPABASE_URL+'/rest/v1/'+table+'?'+col+'=eq.'+encodeURIComponent(val), {
@@ -575,14 +603,25 @@ async function saveItem(code) {
   const item = db.find(x=>x.code===code);
   if(!item) return;
   try {
-    await sbUpsert('items', {
-      code: item.code,
+    // PATCH로 업데이트 시도, 없으면 INSERT
+    await sbPatch('items', 'code', code, {
       tags: item.tags,
       count: item.count,
       weekdays: item.weekdays,
       reviews: item.reviews,
     });
-  } catch(e) { console.error('saveItem error:', e); }
+  } catch(e) {
+    // PATCH 실패시 upsert 시도
+    try {
+      await sbUpsert('items', {
+        code: item.code,
+        tags: item.tags,
+        count: item.count,
+        weekdays: item.weekdays,
+        reviews: item.reviews,
+      });
+    } catch(e2) { console.error('saveItem error:', e2); }
+  }
 }
 
 // ── Save presets ──
@@ -683,7 +722,13 @@ async function addCodes(codes) {
     if(!db.find(x=>x.code===c)) {
       const item={code:c,tags:[],open:false,count:0,weekdays:[0,0,0,0,0,0,0],reviews:[]};
       db.push(item);added++;
-      await saveItem(c);
+      // 새 아이템은 upsert (INSERT)
+      try {
+        await sbUpsert('items', {
+          code:c, tags:[], count:0,
+          weekdays:[0,0,0,0,0,0,0], reviews:[]
+        });
+      } catch(e) { console.error('addCodes error:', e); }
     }
   }
   updateStats();return added;
